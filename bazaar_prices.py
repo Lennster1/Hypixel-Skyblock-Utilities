@@ -45,7 +45,7 @@ while keepGoing == "y":
     keepGoing = input ("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
         break
-    print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
+print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
 
 
 
