@@ -3,21 +3,7 @@ import json
 from time import sleep
 
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
-sendConnectionInfo(response)
-
-keepGoing = "y"
-
-while keepGoing == "y": 
-    requestedProduct = input ("What product would you like to search for? Please note that multi-worded items require an underscore between spaces. | e.g; enchanted_lava_bucket | ")
-    
-    getAndPrintPrice(response, requestedProduct)
-    
-    keepGoing = input ("Would you like to search for another product? (y/n) ")
-    if keepGoing == "n":
-        break
-        print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
-
-
+# define stuff
 def sendConnectionInfo(response):
     if response.status_code != 200:   
         print("There was an error connecting to the server.")
@@ -47,5 +33,22 @@ def getAndPrintPrice(response, requestedProduct):
     except KeyError:
         pass
         print("Hey! " + requestedProduct + " is not tradable on the bazaar.")
+sendConnectionInfo(response)
+
+keepGoing = "y"
+
+while keepGoing == "y": 
+    requestedProduct = input ("What product would you like to search for? Please note that multi-worded items require an underscore between spaces. | e.g; enchanted_lava_bucket | ")
+    
+    getAndPrintPrice(response, requestedProduct)
+    
+    keepGoing = input ("Would you like to search for another product? (y/n) ")
+    if keepGoing == "n":
+        break
+    print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
+
+
+
+
 
 
