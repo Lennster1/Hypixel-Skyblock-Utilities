@@ -19,7 +19,7 @@ def sendConnectionInfo(response):
         sleep(2)
         print("Data successfully recived!")
         sleep(1)
-        
+#still defining stuff
 def getAndPrintPrice(response, requestedProduct):
     data = response.json()
     trueRequestedProduct = requestedProduct.upper()
@@ -33,6 +33,8 @@ def getAndPrintPrice(response, requestedProduct):
     except KeyError:
         pass
         print("Hey! " + requestedProduct + " is not tradable on the bazaar.")
+
+#ok actual code starts here
 sendConnectionInfo(response)
 
 keepGoing = "y"
@@ -45,10 +47,51 @@ while keepGoing == "y":
     keepGoing = input ("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
         break
-    print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
+print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# :)
