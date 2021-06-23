@@ -29,7 +29,7 @@ while keepGoing == "y":
         print ("One " + str(requestedProduct) + " costs " + str(product_buyPrice) + " coins ")
     except KeyError:
         pass
-        print("Hey! That item doesnt exist!")
+        print("Hey! " + requestedProduct + " is not tradable on the bazaar.")
     keepGoing = input ("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
         break
