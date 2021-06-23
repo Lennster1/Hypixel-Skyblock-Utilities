@@ -8,4 +8,4 @@ Note that everytime you get the prices, you will have to run the program again.
 
 
 Thanks alot for lots of repos on github for inspiration.  
-Also thanks to thatoutsparkled, Megiryuu, and Expqnded.
+Also thanks to @outsparkled, Megiryuu, and Expqnded.
