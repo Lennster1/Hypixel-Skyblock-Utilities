@@ -13,8 +13,11 @@ requestedProduct = input ("What product would you like to search for? Please not
 trueRequestedProduct = requestedProduct.upper()
 print (trueRequestedProduct)
 data = requests.get("https://api.hypixel.net/skyblock/bazaar").json()
-product_sellPrice = round(data["products"][trueRequestedProduct]["quick_status"]["sellPrice"], 2)
-product_buyPrice = round(data["products"][trueRequestedProduct]["quick_status"]["buyPrice"], 2)
+try:
+    product_sellPrice = round(data["products"][trueRequestedProduct]["quick_status"]["sellPrice"], 2)
+    product_buyPrice = round(data["products"][trueRequestedProduct]["quick_status"]["buyPrice"], 2)
+except KeyError:
+    print(f"The item {requestedProduct} is not tradable on the bazaar. Did you spell it correctly?")
 
 print ("One " + str(requestedProduct) + " sells for " + str(product_sellPrice) + " coins ")
 print ("One " + str(requestedProduct) + " costs " + str(product_buyPrice) + " coins ")
