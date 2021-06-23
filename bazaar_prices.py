@@ -9,10 +9,8 @@ keepGoing = "y"
 
 while keepGoing == "y": 
     requestedProduct = input ("What product would you like to search for? Please note that multi-worded items require an underscore between spaces. | e.g; enchanted_lava_bucket | ")
-    trueRequestedProduct = requestedProduct.upper()
-    print(trueRequestedProduct)
     
-    getAndOutputPrice(response, trueRequestedProduct)
+    getAndPrintPrice(response, requestedProduct)
     
     keepGoing = input ("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
@@ -36,8 +34,11 @@ def sendConnectionInfo(response):
         print("Data successfully recived!")
         sleep(1)
         
-def getAndOutputPrice(response, trueRequestedProduct):
+def getAndPrintPrice(response, requestedProduct):
     data = response.json()
+    trueRequestedProduct = requestedProduct.upper()
+    print(trueRequestedProduct)
+    
     try: 
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
@@ -45,6 +46,6 @@ def getAndOutputPrice(response, trueRequestedProduct):
         print ("One " + str(requestedProduct) + " costs " + str(product_buyPrice) + " coins ")
     except KeyError:
         pass
-        print("Hey! That item doesnt exist!")
+        print("Hey! " + requestedProduct + " is not tradable on the bazaar.")
 
 
