@@ -17,7 +17,7 @@ response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 names = []
 
 
-# define stuff
+# define connection_info, checks if api is working
 def connection_info(response):
     if response.status_code != 200:
         print("There was an error connecting to the server.")
@@ -42,7 +42,7 @@ def get_names(data):
         names.append(i)
 
 
-# still defining stuff
+# define showing the output
 def print_price(response, requestedProduct):
     data = response.json()
     trueRequestedProduct = requestedProduct.upper()
@@ -56,19 +56,19 @@ def print_price(response, requestedProduct):
     try:
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
-        print("One " + str(requestedProduct) + " sells for " + str(product_sellPrice) + " coins ")
-        print("One " + str(requestedProduct) + " costs " + str(product_buyPrice) + " coins ")
+        print("One " + str(requestedProduct) + " sells for " + str("{:,}".format(product_sellPrice)) + " coins ")
+        print("One " + str(requestedProduct) + " costs " + str("{:,}".format(product_buyPrice)) + " coins ")
     except KeyError:
         pass
         print("Hey! '" + requestedProduct + "' is not tradable on the bazaar.")
 
 
-# ok actual code starts here
+# COde calling functions
 connection_info(response)
 get_names(response)
 
 keepGoing = "y"
-
+# Forever if keepGoing is y, do this stuff. If not, thank and stop
 while keepGoing == "y":
     requestedProduct = input("\nWhat product would you like to search for? | e.g; enchanted lava bucket: ")
     requestedProduct = requestedProduct.replace("_", " ")
