@@ -1,11 +1,25 @@
-import requests
-import json
+import os
+
+# Install packages if not already present
+try:
+    import requests
+except Exception:
+    print("=" * 32)
+    print("Installing required packages...")
+    print("=" * 32)
+    os.system("pip3 install requests")
+finally:
+    import requests
+import difflib
 from time import sleep
 
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
-# define stuff
-def sendConnectionInfo(response):
-    if response.status_code != 200:   
+names = []
+
+
+# define connection_info, checks if api is working
+def connection_info(response):
+    if response.status_code != 200:
         print("There was an error connecting to the server.")
         sleep(2)
         print("Try again later.")
@@ -13,85 +27,57 @@ def sendConnectionInfo(response):
     else:
         print("Connecting to the server... ")
         sleep(2)
-        print("Connection succesful!")
+        print("Connection successful!")
         sleep(1)
         print("Getting data...")
         sleep(2)
         print("Data successfully recived!")
         sleep(1)
-#still defining stuff
-def getAndPrintPrice(response, requestedProduct):
+
+
+# Get a list of all items' names
+def get_names(data):
+    data = data.json()
+    for i in data["products"]:
+        names.append(i)
+
+
+# define showing the output
+def print_price(response, requestedProduct):
     data = response.json()
     trueRequestedProduct = requestedProduct.upper()
-    print(trueRequestedProduct)
-    
-    try: 
+    try:
+        trueRequestedProduct = difflib.get_close_matches(trueRequestedProduct, names)[0]
+        requestedProduct = trueRequestedProduct.replace("_", " ").lower().title()
+        print("\n" + requestedProduct)
+    except IndexError:
+        pass
+
+    try:
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
-        print ("One " + str(requestedProduct) + " sells for " + str(product_sellPrice) + " coins ")
-        print ("One " + str(requestedProduct) + " costs " + str(product_buyPrice) + " coins ")
+        print("One " + str(requestedProduct) + " sells for " + str("{:,}".format(product_sellPrice)) + " coins ")
+        print("One " + str(requestedProduct) + " costs " + str("{:,}".format(product_buyPrice)) + " coins ")
     except KeyError:
         pass
-        print("Hey! " + requestedProduct + " is not tradable on the bazaar.")
+        print("Hey! '" + requestedProduct + "' is not tradable on the bazaar.")
 
-#ok actual code starts here
-sendConnectionInfo(response)
+
+# COde calling functions
+connection_info(response)
+get_names(response)
 
 keepGoing = "y"
+# Forever if keepGoing is y, do this stuff. If not, thank and stop
+while keepGoing == "y":
+    requestedProduct = input("\nWhat product would you like to search for? | e.g; enchanted lava bucket: ")
+    requestedProduct = requestedProduct.replace("_", " ")
 
-while keepGoing == "y": 
-    requestedProduct = input ("What product would you like to search for? Please note that multi-worded items require an underscore between spaces. | e.g; enchanted_lava_bucket | ")
-    
-    getAndPrintPrice(response, requestedProduct)
-    
-    keepGoing = input ("Would you like to search for another product? (y/n) ")
+    print_price(response, requestedProduct.lower())
+
+    keepGoing = input("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
         break
 print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # :)
