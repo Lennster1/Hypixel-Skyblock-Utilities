@@ -1,6 +1,6 @@
 import os
 
-# Install packages if not already
+# Install packages if not already present
 try:
     import requests
 except Exception:
