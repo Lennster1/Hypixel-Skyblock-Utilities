@@ -16,7 +16,6 @@ from time import sleep
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 names = []
 
-
 # define connection_info, checks if api is working
 def connection_info(response):
     if response.status_code != 200:
@@ -26,11 +25,11 @@ def connection_info(response):
         exit()
     else:
         print("Connecting to the server... ")
-        sleep(2)
+        sleep(1)
         print("Connection successful!")
         sleep(1)
         print("Getting data...")
-        sleep(2)
+        sleep(1)
         print("Data successfully recived!")
         sleep(1)
 
@@ -56,11 +55,25 @@ def print_price(response, requestedProduct):
     try:
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
-        print("One " + str(requestedProduct) + " sells for " + str("{:,}".format(product_sellPrice)) + " coins ")
-        print("One " + str(requestedProduct) + " costs " + str("{:,}".format(product_buyPrice)) + " coins ")
+        #difference between sell and buy
+        diff = product_buyPrice - product_sellPrice
+        #amount of items insta sold/bought this week
+        salesweek = data['products'][trueRequestedProduct]['quick_status']['sellMovingWeek']
+        buysweek = data['products'][trueRequestedProduct]['quick_status']['buyMovingWeek']
+        print("-----------------------------------------------------------------------------")
+        print(f"One {requestedProduct} sells for {str('{:,}'.format(product_sellPrice))} coins ")
+        print(f"One {requestedProduct} costs {str('{:,}'.format(product_buyPrice))} coins ")
+        print("")
+        print(f"The difference between buy and sell price is {str('{:,}'.format(round(diff)))} coins")
+        print(f"The difference between buy and sell price after tax is {str('{:,}'.format(round(diff - 1/100 * product_buyPrice)))} coins")
+        print(f"")
+        print(f"Amount of items insta-bought this week: {buysweek}")
+        print(f"Amount of items insta-sold this week: {salesweek}")
+        print("-----------------------------------------------------------------------------")
+
     except KeyError:
         pass
-        print("Hey! '" + requestedProduct + "' is not tradable on the bazaar.")
+        print(f"Hey! '{requestedProduct}' is not tradable on the bazaar.")
 
 
 # COde calling functions
