@@ -55,9 +55,9 @@ def print_price(response, requestedProduct):
     try:
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
-        #difference between sell and buy
+        # difference between sell and buy
         diff = product_buyPrice - product_sellPrice
-        #amount of items insta sold/bought this week
+        # amount of items insta sold/bought this week
         salesweek = data['products'][trueRequestedProduct]['quick_status']['sellMovingWeek']
         buysweek = data['products'][trueRequestedProduct]['quick_status']['buyMovingWeek']
         print("-----------------------------------------------------------------------------")
@@ -65,10 +65,9 @@ def print_price(response, requestedProduct):
         print(f"One {requestedProduct} costs {str('{:,}'.format(product_buyPrice))} coins ")
         print("")
         print(f"The difference between buy and sell price is {str('{:,}'.format(round(diff)))} coins")
-        print(f"The difference between buy and sell price after tax is {str('{:,}'.format(round(diff - 1/100 * product_buyPrice)))} coins")
         print(f"")
-        print(f"Amount of items insta-bought this week: {buysweek}")
-        print(f"Amount of items insta-sold this week: {salesweek}")
+        print("Amount of items insta-bought this week: " + str("{:,}".format(buysweek)))
+        print("Amount of items insta-sold this week: " + str("{:,}".format(buysweek)))
         print("-----------------------------------------------------------------------------")
 
     except KeyError:
