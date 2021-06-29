@@ -8,4 +8,4 @@ If you don't want to download python and the dependencies, you can use it here: 
 
 Thanks alot for lots of repos on github for inspiration.  
 Thanks to  Expqnded for being kind random person who decided to help me.  
-And finally, huge thanks to @outsparkled and @megiryuu doing lots of work on this as an volunteer. 
+And finally, huge thanks to @outsparkled, @neyi780 and @megiryuu doing lots of work on this as an volunteer. 
