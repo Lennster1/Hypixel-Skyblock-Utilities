@@ -30,7 +30,7 @@ def connection_info(response):
         sleep(1)
         print("Getting data...")
         sleep(1)
-        print("Data successfully recived!")
+        print("Data successfully received!")
         sleep(1)
 
 
@@ -44,25 +44,30 @@ def get_names(data):
 # define showing the output
 def print_price(response, requestedProduct):
     data = response.json()
-    trueRequestedProduct = requestedProduct.upper()
+    trueRequestedProduct = requestedProduct.upper().replace("_", " ")
+    
     try:
         trueRequestedProduct = difflib.get_close_matches(trueRequestedProduct, names)[0]
-        requestedProduct = trueRequestedProduct.replace("_", " ").lower().title()
-        print("\n" + requestedProduct)
+        displayRequestedProduct = trueRequestedProduct.replace("_", " ").lower().title()
+        print("\n" + displayRequestedProduct)
     except IndexError:
+        # no close matches
         pass
 
     try:
         product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
         product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
+        
         # difference between sell and buy
         diff = product_buyPrice - product_sellPrice
+        
         # amount of items insta sold/bought this week
         salesweek = data['products'][trueRequestedProduct]['quick_status']['sellMovingWeek']
         buysweek = data['products'][trueRequestedProduct]['quick_status']['buyMovingWeek']
+        
         print("-----------------------------------------------------------------------------")
-        print(f"One {requestedProduct} sells for {str('{:,}'.format(product_sellPrice))} coins ")
-        print(f"One {requestedProduct} costs {str('{:,}'.format(product_buyPrice))} coins ")
+        print(f"One {displayRequestedProduct} sells for {str('{:,}'.format(product_sellPrice))} coins ")
+        print(f"One {displayRequestedProduct} costs {str('{:,}'.format(product_buyPrice))} coins ")
         print("")
         print(f"The difference between buy and sell price is {str('{:,}'.format(round(diff)))} coins")
         print(f"")
@@ -75,7 +80,7 @@ def print_price(response, requestedProduct):
         print(f"Hey! '{requestedProduct}' is not tradable on the bazaar.")
 
 
-# COde calling functions
+# Code calling functions
 connection_info(response)
 get_names(response)
 
@@ -83,9 +88,8 @@ keepGoing = "y"
 # Forever if keepGoing is y, do this stuff. If not, thank and stop
 while keepGoing == "y":
     requestedProduct = input("\nWhat product would you like to search for? | e.g; enchanted lava bucket: ")
-    requestedProduct = requestedProduct.replace("_", " ")
 
-    print_price(response, requestedProduct.lower())
+    print_price(response, requestedProduct)
 
     keepGoing = input("Would you like to search for another product? (y/n) ")
     if keepGoing == "n":
