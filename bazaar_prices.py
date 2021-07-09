@@ -72,7 +72,7 @@ def print_price(response, requestedProduct):
         print(f"The difference between buy and sell price is {str('{:,}'.format(round(diff)))} coins")
         print(f"")
         print("Amount of items insta-bought this week: " + str("{:,}".format(buysweek)))
-        print("Amount of items insta-sold this week: " + str("{:,}".format(buysweek)))
+        print("Amount of items insta-sold this week: " + str("{:,}".format(salesweek)))
         print("-----------------------------------------------------------------------------")
 
     except KeyError:
