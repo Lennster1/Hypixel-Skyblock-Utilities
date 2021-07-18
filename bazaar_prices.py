@@ -1,15 +1,5 @@
-import os
+import requests
 
-# Install packages if not already present
-try:
-    import requests
-except Exception:
-    print("=" * 32)
-    print("Installing required packages...")
-    print("=" * 32)
-    os.system("pip3 install requests")
-finally:
-    import requests
 import difflib
 from time import sleep
 
