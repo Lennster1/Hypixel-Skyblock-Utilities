@@ -23,7 +23,7 @@ def connection_info(response):
         sleep(1)
         print("Getting data...")
         sleep(1)
-        print("Data successfully recived!")
+        print("Data successfully received!")
         sleep(1)
 
 # Get a list of all items' names
