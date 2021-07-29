@@ -3,6 +3,9 @@ import requests
 import difflib
 from time import sleep
 
+#Colored output
+from colorama import Fore, Back, Style
+
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 names = []
 
@@ -23,67 +26,75 @@ def connection_info(response):
         print("Data successfully received!")
         sleep(1)
 
-
 # Get a list of all items' names
 def get_names(data):
     data = data.json()
     for i in data["products"]:
         names.append(i)
 
-
 # define showing the output
 def print_price(response, requestedProduct):
     data = response.json()
-    trueRequestedProduct = requestedProduct.upper().replace("_", " ")
-    
+    trueRequestedProduct = requestedProduct.upper()
     try:
         trueRequestedProduct = difflib.get_close_matches(trueRequestedProduct, names)[0]
-        displayRequestedProduct = trueRequestedProduct.replace("_", " ").lower().title()
-        print("\n" + displayRequestedProduct)
+        requestedProduct = trueRequestedProduct.replace("_", " ").lower().title()
+        print("\n" + requestedProduct)
     except IndexError:
-        # no close matches
         pass
 
-    try:
-        product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
-        product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
-        
-        # difference between sell and buy
-        diff = product_buyPrice - product_sellPrice
-        
-        # amount of items insta sold/bought this week
-        salesweek = data['products'][trueRequestedProduct]['quick_status']['sellMovingWeek']
-        buysweek = data['products'][trueRequestedProduct]['quick_status']['buyMovingWeek']
-        
-        print("-----------------------------------------------------------------------------")
-        print(f"One {displayRequestedProduct} sells for {str('{:,}'.format(product_sellPrice))} coins ")
-        print(f"One {displayRequestedProduct} costs {str('{:,}'.format(product_buyPrice))} coins ")
-        print("")
-        print(f"The difference between buy and sell price is {str('{:,}'.format(round(diff)))} coins")
-        print(f"")
-        print("Amount of items insta-bought this week: " + str("{:,}".format(buysweek)))
-        print("Amount of items insta-sold this week: " + str("{:,}".format(salesweek)))
-        print("-----------------------------------------------------------------------------")
+    product_sellPrice = data["products"][trueRequestedProduct]["sell_summary"][0]["pricePerUnit"]
+    product_buyPrice = data["products"][trueRequestedProduct]["buy_summary"][0]["pricePerUnit"]
+    # difference between sell and buy
 
-    except KeyError:
-        pass
-        print(f"Hey! '{requestedProduct}' is not tradable on the bazaar.")
+    differenceBuySell = product_buyPrice - product_sellPrice
 
+    # amount of items insta sold/bought this week
 
-# Code calling functions
+    salesWeek = data['products'][trueRequestedProduct]['quick_status']['sellMovingWeek']
+    buysWeek = data['products'][trueRequestedProduct]['quick_status']['buyMovingWeek']
+    print(
+        Fore.YELLOW + Style.BRIGHT + "-----------------------------------------------------------------------------" + Style.RESET_ALL)
+    print(
+        f"One {Style.BRIGHT + Fore.YELLOW}{requestedProduct}{Style.RESET_ALL} sells for {Back.BLACK + Fore.YELLOW + Style.BRIGHT}{str('{:,}'.format(product_sellPrice))}{Style.RESET_ALL} coins ")
+    print(
+        f"One {Style.BRIGHT + Fore.YELLOW}{requestedProduct}{Style.RESET_ALL} costs {Back.BLACK + Fore.YELLOW + Style.BRIGHT}{str('{:,}'.format(product_buyPrice))}{Style.RESET_ALL} coins ")
+    print(
+        f"64x {Style.BRIGHT + Fore.YELLOW}{requestedProduct}{Style.RESET_ALL} costs {Back.BLACK + Fore.YELLOW + Style.BRIGHT}{str('{:,}'.format(product_buyPrice * 64))}{Style.RESET_ALL} coins ")
+    print("")
+    print(
+        f"The difference between buy and sell price is {Back.BLACK + Fore.YELLOW + Style.BRIGHT}{str('{:,}'.format(round(differenceBuySell, 2)))}{Style.RESET_ALL} coins")
+    print("")
+    print("Amount of items insta-bought this week: " + Back.BLACK + Fore.YELLOW + Style.BRIGHT + str(
+        "{:,}".format(buysWeek)) + Style.RESET_ALL + " items")
+    print("Amount of items insta-sold this week: " + Back.BLACK + Fore.YELLOW + Style.BRIGHT + str(
+        "{:,}".format(salesWeek)) + Style.RESET_ALL + " items")
+    print(
+         Fore.YELLOW + Style.BRIGHT + "-----------------------------------------------------------------------------" + Style.RESET_ALL)
+
+# COde calling functions
 connection_info(response)
 get_names(response)
 
-keepGoing = "y"
-# Forever if keepGoing is y, do this stuff. If not, thank and stop
-while keepGoing == "y":
-    requestedProduct = input("\nWhat product would you like to search for? | e.g; enchanted lava bucket: ")
+#Instead of asking if you want to search an other product, it asks until it gives a valid product
+while True:
+    while True:
+        requestedProduct = input("\nWhat product would you like to search for? | e.g; enchanted lava bucket: ")
+        requestedProduct = requestedProduct.replace("_", " ")
+        try:
+            print_price(response, requestedProduct.lower())
+            break
+        except KeyError:
+            pass
+            print(f"Hey! '{Fore.YELLOW + Style.BRIGHT}{requestedProduct}{Style.RESET_ALL}' is not tradable on the bazaar.")
 
-    print_price(response, requestedProduct)
-
-    keepGoing = input("Would you like to search for another product? (y/n) ")
-    if keepGoing == "n":
+    keepGoing = input("Would you like to search for another product? (y/n): ")
+    if keepGoing == "y":
+        continue
+    else:
         break
+
+print("")
 print("Thank you for using Hypixel-Skyblock-Utilities by Lennster1")
 
 # :)
